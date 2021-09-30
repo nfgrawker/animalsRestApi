@@ -35,7 +35,8 @@ class ModelList(APIView):
     def post(self, request, format=None):
         model = self.request.query_params.get("model")
         _, _serializer = self.get_model(model)
-        serializer = _serializer(data=request.data)
+        list_of_data = request.data["entries"]
+        serializer = _serializer(data=list_of_data,many=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -83,3 +84,17 @@ class ModelDetail(APIView):
         model_data = self.get_object(_model, _serializer, pk)
         model_data.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def post(self, request, pk=None,format=None):
+        model = self.request.query_params.get("model")
+        _model, _serializer = self.get_model(model)
+
+        serializer = _serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
