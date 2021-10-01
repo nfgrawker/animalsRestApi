@@ -31,6 +31,7 @@ class ModelList(APIView):
         model_data = _model.objects.all()
         serializer = _serializer(model_data, many=True)
         return Response(serializer.data)
+
     @csrf_exempt
     def post(self, request, format=None):
         model = self.request.query_params.get("model")
@@ -55,16 +56,18 @@ class ModelDetail(APIView):
     def get_object(self, model, serializer, pk):
         try:
             return model.objects.get(pk=pk)
-        except serializer.DoesNotExist:
+        except model.DoesNotExist:
             raise Http404
 
     def get(self, request, pk, format=None):
         model = self.request.query_params.get("model")
         _model, _serializer = self.get_model(model)
+        print(type(request))
 
         model_data = self.get_object(_model, _serializer, pk)
         serializer = _serializer(model_data)
         return Response(serializer.data)
+
     @csrf_exempt
     def put(self, request, pk, format=None):
         model = self.request.query_params.get("model")

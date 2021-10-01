@@ -25,7 +25,7 @@ This project is intended to show proficiency in Django/DRF.
          1. Creates all current objects of requested model if able.
          2. Must send in an json object like `{"entries":[{ModelData},{ModelData},{ModelData}]}`
          3. Be aware only one type of model can be sent in at one time.
-   2. `http://{basapi}/animals/<pk>/`
+   2. `http://{baseapi}/animals/<pk>/`
       1. This takes a Get, Must have correct PK.
          1. Returns one object associated with the PK
       2. This takes a put, delete, post.
@@ -34,7 +34,6 @@ This project is intended to show proficiency in Django/DRF.
 3. **Things to Add**
    2. Refactor views into a more readable/sustainable format, consider using mixins.
    3. Add Auto generated API docs.
-   4. Add config parser and custom decorators files.
    5. Consider adding dataclasses for incoming requests.data so we have editor support and documentation of what we expect.(might coinside with API docs.)
    6. Switch to postgres with location support, gis django model library as well.
    7. Add tests.
