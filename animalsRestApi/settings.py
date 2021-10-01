@@ -3,14 +3,16 @@ Settings for the Main Application.
 """
 
 from pathlib import Path
+from utils.config import Config
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+config = Config()
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-$*a82s$dui!0$@%b1xd^%fol4u9^((d6)7upk9&c_(4(tcs$g$'
+SECRET_KEY = config.data.secret
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

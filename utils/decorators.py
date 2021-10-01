@@ -1,5 +1,5 @@
 """Decorate functions."""
-from typing import Callable
+from typing import Callable, Tuple, Dict, Any
 
 
 def singleton(cls: Callable) -> Callable:
