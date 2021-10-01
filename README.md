@@ -32,7 +32,6 @@ This project is intended to show proficiency in Django/DRF.
          1. Will do the correct action with associated PK and return the object or status code. If it is a post then pass in 0 for the pk.
 
 3. **Things to Add**
-   1. Add put and delete to list route.
    2. Refactor views into a more readable/sustainable format, consider using mixins.
    3. Add Auto generated API docs.
    4. Add config parser and custom decorators files.
