@@ -32,10 +32,10 @@ This project is intended to show proficiency in Django/DRF.
          1. Will do the correct action with associated PK and return the object or status code. If it is a post then pass in 0 for the pk.
 
 3. **Things to Add**
-   2. Refactor views into a more readable/sustainable format, consider using mixins.
-   3. Add Auto generated API docs.
-   5. Consider adding dataclasses for incoming requests.data so we have editor support and documentation of what we expect.(might coinside with API docs.)
-   6. Switch to postgres with location support, gis django model library as well.
-   7. Add tests.
-   8. Make fully mypy complaint and run black/flake8 on each file.
+   1. Refactor views into a more readable/sustainable format, consider using mixins.
+   2. Consider adding dataclasses for incoming requests.data so we have editor support and documentation of what we expect.(might coinside with API docs.)
+   3. Switch to postgres with location support, gis django model library as well.
+   4. Add tests.
+   5. Make fully mypy complaint and run black/flake8 on each file.
+   6. Switch to using swagger/openapi for auto docs, might be cleaner and more extensive.
 

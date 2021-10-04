@@ -1,103 +1,18 @@
 """Parse requests that come in to the Animals routes."""
 
-from django.http import Http404
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework import status
+from rest_framework import generics
 from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework.reverse import reverse
 
-from animals.models import Region, Location, Animal, Species
-from animals.serializers import RegionSerializer, LocationSerializer, AnimalSerializer, SpeciesSerializer
-
-MODEL_SWITCH_CASE = {"region": (Region, RegionSerializer),
-                     "location": (Location, LocationSerializer),
-                     "animal": (Animal, AnimalSerializer),
-                     "species": (Species, SpeciesSerializer)}
+from animals.sevices.animals_service import AnimalList
+from animals.sevices.location_service import LocationList
+from animals.sevices.species_service import SpeciesList
+from animals.sevices.region_service import RegionList
 
 
+class ApiRoot(generics.GenericAPIView):
+    name = 'api-root'
 
-class ModelList(APIView):
-    """
-    List all of one model, or create a models from a list.
-    """
-
-    def get_model(self, model):
-        _model, _serializer = MODEL_SWITCH_CASE[model]
-        return _model, _serializer
-
-    def get(self, request, format=None):
-        model = self.request.query_params.get("model")
-        _model, _serializer = self.get_model(model)
-        model_data = _model.objects.all()
-        serializer = _serializer(model_data, many=True)
-        return Response(serializer.data)
-
-    @csrf_exempt
-    def post(self, request, format=None):
-        model = self.request.query_params.get("model")
-        _, _serializer = self.get_model(model)
-        list_of_data = request.data["entries"]
-        serializer = _serializer(data=list_of_data,many=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class ModelDetail(APIView):
-    """
-    Retrieve, update or delete a model instance.
-    """
-
-    def get_model(self, model):
-        model, serializer = MODEL_SWITCH_CASE[model]
-        return model, serializer
-
-    def get_object(self, model, serializer, pk):
-        try:
-            return model.objects.get(pk=pk)
-        except model.DoesNotExist:
-            raise Http404
-
-    def get(self, request, pk, format=None):
-        model = self.request.query_params.get("model")
-        _model, _serializer = self.get_model(model)
-        print(type(request))
-
-        model_data = self.get_object(_model, _serializer, pk)
-        serializer = _serializer(model_data)
-        return Response(serializer.data)
-
-    @csrf_exempt
-    def put(self, request, pk, format=None):
-        model = self.request.query_params.get("model")
-        _model, _serializer = self.get_model(model)
-
-        model_data = self.get_object(_model, _serializer, pk)
-        serializer = _serializer(model_data, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    @csrf_exempt
-    def delete(self, request, pk, format=None):
-        model = self.request.query_params.get("model")
-        _model, _serializer = self.get_model(model)
-
-        model_data = self.get_object(_model, _serializer, pk)
-        model_data.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-    def post(self, request, pk=None,format=None):
-        model = self.request.query_params.get("model")
-        _model, _serializer = self.get_model(model)
-
-        serializer = _serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
+    def get(self, request, *args, **kwargs):
+        return Response({
+            'animals': reverse(AnimalList.name, request=request), 'location': reverse(LocationList.name, request=request), 'species': reverse(SpeciesList.name, request=request), 'region': reverse(RegionList.name, request=request)})
